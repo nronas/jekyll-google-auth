@@ -8,7 +8,7 @@ class JekyllAuth
   end
 
   def self.config_filename
-    File.join(Dir.pwd, "_config.yml")
+    File.join(Dir.pwd, ENV.fetch("JEKYLL_CONFIG_FILE", "_config.yml"))
   end
 
   def self.config

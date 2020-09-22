@@ -1,6 +1,7 @@
 #!/usr/bin/env ruby
 # Command-line interface for jekyll-auth
 
+require 'dotenv/load'
 require 'rubygems'
 require 'commander/import'
 require 'rake'
@@ -53,7 +54,7 @@ command :setup do |c|
       say "Looks like we're missing the Heroku client. Let's see if we can't install it..."
       `wget -qO- https://toolbelt.heroku.com/install.sh | sh`
     end
-    
+
     git = Git.init
     git.add "config.ru"
     git.add "Rakefile"
@@ -120,7 +121,6 @@ command :serve do |c|
     say "Spinning up the server with authentication. Use CTRL-C to stop."
     say "To preview the site without authentication, use the `jekyll serve` command"
     sh "bundle exec rackup -p 4000"
-
   end
 end
 
@@ -132,7 +132,7 @@ command :build do |c|
   c.description = "Build Jekyll site"
   c.action do |args, options|
     say "building the site..."
-    sh "bundle exec jekyll build"
+    sh "bundle exec jekyll build --config #{ENV.fetch("JEKYLL_CONFIG_FILE", "_config.yml")}"
     say "site built."
   end
 end
